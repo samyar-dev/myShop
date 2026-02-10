@@ -1,0 +1,46 @@
+{% extends 'parent/base.html' %}
+{% load static %}
+{% load humanize %}
+{% block title %} shopping cart {% endblock %}
+{% block content %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $('.increase-item').click(function(){
+            updateQuantity($(this).closest('.items').data('product-id'), 'increase');
+        })
+
+        $('.decrease-item').click(function(){
+            updateQuantity($(this).closest('.items').data('product-id'), 'decrease');
+        })
+		
+        $('.remove-item').click(function(){
+            var itemID = $(this).closest('.items').data('product-id');
+            var removeBtn = $(this);
+            $.ajax({
+                type: 'POST',
+                url: '{% url "cart:remove_item" %}',
+                data: {'itemID': itemID, 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+                success: function(response){
+                    $('#site-header').load('/partials/header/');
+                    $('#total-items').text(response.total_items);
+                    $(removeBtn).closest('.items').remove();
+                }
+            })
+        })
+
+		function updateQuantity(id, action){
+			$.ajax({
+				type: 'POST',
+                url: '{% url "cart:update_quantity" %}',
+                data: {'id': id, 'action': action, 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+                success: function(data){
+                    $("#total-items").text(data.total_items);
+                    },
+	            })
+            }
+        })
+</script>
+
+</body>
+{% endblock %}

@@ -1,0 +1,153 @@
+<style>
+
+    /* ─── هدر ثابت ─── */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 70px;
+      background: linear-gradient(135deg, #1a1a1f 0%, #0f0f14 100%);
+      border-bottom: 1px solid #3a2a1a;
+      box-shadow: 0 4px 25px rgba(0,0,0,0.7);
+      z-index: 1000;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .header-container {
+      max-width: 1400px;
+      height: 100%;
+      margin: 0 auto;
+      padding: 0 25px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* لوگو / آیکون جواهرات */
+    .logo {
+      font-size: 1.9rem;
+      font-weight: 700;
+      color: #d4af37;
+      letter-spacing: 1px;
+      text-decoration: none;
+      background: linear-gradient(90deg, #d4af37, #f0d082, #d4af37);
+
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 10px rgba(212,175,55,0.25);
+    }
+
+    /* باکس جستجو */
+    .search-box {
+      flex: 0 1 420px;
+      position: relative;
+    }
+
+    .search-box input {
+      width: 100%;
+      height: 46px;
+      padding: 0 20px 0 48px;
+      border: 1px solid #4a3c2a;
+      border-radius: 30px;
+      background: #141418;
+      color: #eee;
+      font-size: 1rem;
+      transition: all 0.25s ease;
+    }
+
+    .search-box input:focus {
+      outline: none;
+      border-color: #d4af37;
+      box-shadow: 0 0 0 3px rgba(212,175,55,0.15);
+    }
+
+    .search-box::before {
+      content: "🔍";
+      position: absolute;
+      right: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #a38b4f;
+      font-size: 1.1rem;
+      pointer-events: none;
+    }
+
+    /* بخش راست - پروفایل و سبد */
+    .right-section {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+
+    .icon-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: #1e1e24;
+      border: 1px solid #3a2a1a;
+      color: #d4af37;
+      font-size: 1.35rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+
+    .icon-btn:hover {
+      background: #d4af37;
+      color: #0f0f14;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(212,175,55,0.25);
+    }
+
+    .profile-img {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #d4af37;
+    }
+</style>
+
+<header>
+  <div class="header-container">
+
+    <!-- لوگو -->
+    <a href="/" class="logo">جواهرات سَرای زَر</a>
+
+    <!-- جستجو -->
+    <div class="search-box">
+      <input type="text" placeholder="جستجوی گردنبند، انگشتر، دستبند طلایی..." name="query" class="search-input"/>
+    </div>
+
+    <!-- آیکون‌ها -->
+    <div class="right-section">
+
+      <!-- سبد خرید / فروشگاه -->
+      <a href="{% url 'cart:cart_detail' %}" class="icon-btn" title="سبد خرید">
+        🛍️
+      </a>
+
+      <!-- پروفایل کاربر -->
+      {% if user.is_authenticated %}
+      <a href="/profile" class="icon-btn" title="حساب کاربری">
+        <!-- اگر عکس داشتید از این استفاده کنید: -->
+        <!-- <img src="user-avatar.jpg" class="profile-img" alt="profile"> -->
+        <!-- در غیر این صورت آیکون ساده: -->
+        👤
+      </a>
+      {% else %}
+      <a href="/login" class="icon-btn" title="ورود به حساب کاربری">
+        ورود
+      </a>
+      {% endif %}
+
+    </div>
+
+  </div>
+</header>
+
+</head>

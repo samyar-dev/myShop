@@ -1,0 +1,12 @@
+{% extends 'parent/base.html' %}
+{% load static %}
+{% block title %} login {% endblock %}
+{% block content %}
+    <div>
+        <form action="" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="وارد شوید">
+        </form>
+    </div>
+{% endblock %}
