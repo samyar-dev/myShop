@@ -110,6 +110,7 @@
       object-fit: cover;
       border: 2px solid #d4af37;
     }
+
 </style>
 
 <header>
@@ -121,7 +122,10 @@
     <!-- جستجو -->
     <div class="search-box">
       <input type="text" placeholder="جستجوی گردنبند، انگشتر، دستبند طلایی..." name="query" class="search-input"/>
+	  <div class="searched-items"></div>
     </div>
+
+
 
     <!-- آیکون‌ها -->
     <div class="right-section">
@@ -148,6 +152,29 @@
     </div>
 
   </div>
+
+<script>
+let searchInput = document.querySelector('.search-input');
+let searchItems = document.querySelector('.searched-items');
+searchInput.addEventListener('input', function(){
+	searchItems.innerHTML = '';
+	fetch('{% url "shop:search" %}?query=' + this.value, {
+		  method: 'GET',
+		  headers: {"X-CSRFToken": '{{ csrf_token }}'}
+		  }).then(function(res){
+		      return res.json()
+		  }).then(data => {
+	        // searchItems.append(data)
+	        data.searched_res.forEach(element => {
+	            const a = document.createElement("a");
+				a.href = 'product/' + element.id + '/' + element.slug + '/'
+				a.textContent = element.name + " سرچ شده";
+	  			searchItems.appendChild(a);
+	        });
+	      });
+		})
+</script>
+
 </header>
 
 </head>

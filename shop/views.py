@@ -1,6 +1,5 @@
 from django.shortcuts import render, get_object_or_404
 from . models import Category, Product
-from . forms import SearchForm
 from cart.cart import Cart
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
@@ -31,6 +30,14 @@ def product(request, id, slug):
         'product': product
     }
     return render(request, "shop/product.html", context)
+
+
+def search(request):
+    query = request.GET.get('query')
+    if query:
+        searched_res = Product.objects.filter(Q(name__icontains=query)).values('id', 'slug', 'name')
+        print(list(searched_res))
+        return JsonResponse({'searched_res': list(searched_res)})
 
 
 @require_POST

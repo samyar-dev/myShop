@@ -9,5 +9,5 @@ urlpatterns = [
     path('products/<slug:category_slug>/', views.products, name='products_by_category'),
     path('product/<int:id>/<str:slug>/', views.product, name='product'),
     path('like/<int:id>/', views.like_view, name='like_view'),
-    # path('search/', views.search, name='search'),
+    path('search/', views.search, name='search'),
 ]
