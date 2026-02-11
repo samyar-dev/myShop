@@ -165,7 +165,7 @@
       </div>
 
       <div class="product-info">
-        <h3 class="product-title">{{ product.name }}</h3>
+        <a href="{% url 'shop:product' product.id product.slug %}"><h3 class="product-title">{{ product.name }}</h3></a>
         <div class="product-price">{{ product.price }} تومان</div>
         <button class="add-to-cart">افزودن به سبد</button>
       </div>

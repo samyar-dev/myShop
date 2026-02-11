@@ -36,7 +36,6 @@ def search(request):
     query = request.GET.get('query')
     if query:
         searched_res = Product.objects.filter(Q(name__icontains=query)).values('id', 'slug', 'name')
-        print(list(searched_res))
         return JsonResponse({'searched_res': list(searched_res)})
 
 
@@ -44,9 +43,11 @@ def search(request):
 def like_view(request, id):
     product = get_object_or_404(Product, id=id)
     if request.user in product.liked_by.all():
+        print('hi')
         product.liked_by.remove(request.user)
         liked = False
     else:
+        print('hi')
         product.liked_by.add(request.user)
         liked = True
 

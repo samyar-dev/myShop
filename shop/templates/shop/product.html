@@ -2,5 +2,72 @@
 {% load static %}
 {% load humanize %}
 {% block title %} {{ product.name }} {% endblock %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/prod-detail.css' %}">
+{% endblock %}
 {% block content %}
+
+<header>
+  <div class="header-container">
+    <a href="#" class="logo">جواهرات سَرای زَر</a>
+
+    <div class="search-box">
+      <input type="text" placeholder="جستجوی گردنبند، انگشتر، دستبند طلایی...">
+    </div>
+
+    <div class="right-section">
+      <a href="#" class="icon-btn">🛍️</a>
+      <a href="#" class="icon-btn">👤</a>
+    </div>
+  </div>
+</header>
+
+<section class="product-section">
+  <div class="product-container">
+
+    <div class="product-image">
+      <img src="{{ product.images.first.image_file.url }}" alt="{{ product.name }}">
+    </div>
+
+    <div class="product-info">
+      <div>
+        <h2>گردنبند طلای ۱۸ عیار طرح کلاسیک</h2>
+        <p>
+          گردنبند طلای ۱۸ عیار با طراحی لوکس و ظریف، مناسب استفاده روزمره و مجالس رسمی.
+          ساخته شده با بالاترین کیفیت ساخت و درخشندگی ماندگار.
+        </p>
+        <div class="price">۲۴,۸۰۰,۰۰۰ تومان</div>
+      </div>
+
+      <button class="buy-btn">افزودن به سبد خرید</button>
+
+      <button class="like-btn">
+        {% if request.user in product.liked_by.all %}
+            ♡
+        {% else %}
+            ❤️
+        {% endif %}
+      </button>
+    </div>
+
+  </div>
+</section>
+
+<script>
+    let likeBtn = document.querySelector('.like-btn');
+    likeBtn.addEventListener('click', function(){
+        fetch('{% url "shop:like_view" product.id %}', {
+            method: 'POST',
+            headers: {"X-CSRFToken": '{{ csrf_token }}', "Content-Type": "application/json"},
+        }).then(data => {return data.json()})
+        .then(function(data){
+            if (data.liked){
+                likeBtn.innerHTML = '♡'
+            } else {
+                likeBtn.innerHTML = '❤️'
+            }
+        })
+    })
+</script>
+
 {% endblock %}
