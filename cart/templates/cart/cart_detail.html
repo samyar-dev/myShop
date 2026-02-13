@@ -3,6 +3,38 @@
 {% load humanize %}
 {% block title %} shopping cart {% endblock %}
 {% block content %}
+
+<section class="cart-section">
+    <div class="cart-container">
+
+    <!-- محصول ۱ -->
+    <div class="cart-item">
+    <img src="https://via.placeholder.com/80" alt="محصول ۱">
+    <div class="item-info">
+    <h3>گردنبند طلای ۱۸ عیار</h3>
+    <p>تعداد: ۱</p>
+    <div class="item-price">۲۴,۸۰۰,۰۰۰ تومان</div>
+    </div>
+    <button class="remove-btn">حذف</button>
+    </div>
+
+    <!-- محصول ۲ -->
+    <div class="cart-item">
+    <img src="https://via.placeholder.com/80" alt="محصول ۲">
+    <div class="item-info">
+    <h3>انگشتر الماس</h3>
+    <p>تعداد: ۲</p>
+    <div class="item-price">۳۵,۰۰۰,۰۰۰ تومان</div>
+    </div>
+    <button class="remove-btn">حذف</button>
+    </div>
+    <!-- جمع کل -->
+    <div class="total-price">جمع کل: ۹۴,۸۰۰,۰۰۰ تومان</div>
+    <button class="checkout-btn">ادامه به پرداخت</button>
+
+    </div>
+</section>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script>
     $(document).ready(function(){

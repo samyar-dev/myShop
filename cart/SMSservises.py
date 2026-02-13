@@ -20,7 +20,7 @@ def send_bulk_sms(messageText, mobiles:list, sendDateTime=None):
     print(data.decode("utf-8"))
 
 
-def verifiction(mobile, code):
+def verification(mobile, code):
     conn = http.client.HTTPSConnection("api.sms.ir")
     # payload = "{\n  \"mobile\": \"09195121341",\n  \"templateId\": YourTemplateID,\n
     # \"parameters\": [\n    {\n      \"name\": \"PARAMETER1\",\n      \"value\": \"000000\"\n    },
@@ -38,6 +38,3 @@ def verifiction(mobile, code):
     res = conn.getresponse()
     data = res.read()
     print(data.decode("utf-8"))
-    
-    
-print('😊')

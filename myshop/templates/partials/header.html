@@ -135,14 +135,14 @@
 
       <!-- پروفایل کاربر -->
       {% if user.is_authenticated %}
-      <a href="/profile" class="icon-btn" title="حساب کاربری">
+      <a href="#" class="icon-btn" title="حساب کاربری">
         <!-- اگر عکس داشتید از این استفاده کنید: -->
         <!-- <img src="user-avatar.jpg" class="profile-img" alt="profile"> -->
         <!-- در غیر این صورت آیکون ساده: -->
         👤
       </a>
       {% else %}
-      <a href="/login" class="icon-btn" title="ورود به حساب کاربری">
+      <a href="{% url 'account:phone_login' %}" class="icon-btn" title="ورود به حساب کاربری">
         ورود
       </a>
       {% endif %}

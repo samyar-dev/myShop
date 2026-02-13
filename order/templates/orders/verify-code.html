@@ -1,9 +1,0 @@
-{% extends 'parent/base.html' %}
-{% block title%} verify code {%endblock%}
-{% block content %}
-    <form method="post">
-        {% csrf_token %}
-        <input type="text" name="code">
-        <input type="submit" value="تایید کد">
-    </form>
-{% endblock %}

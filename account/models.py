@@ -21,7 +21,6 @@ class ShopUserManager(BaseUserManager):
 
         if not is_staff_ & is_superuser_:
             raise ValueError("can not create superuser")
-        
         return self.create_user(phone, password=None, **extra_fields)
 
 

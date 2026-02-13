@@ -29,10 +29,6 @@ class ShopUserChangeForm(UserChangeForm, UserValidationMixin):
         fields = ('phone', 'first_name', 'last_name', 'is_active', 'is_staff', 'is_superuser')
 
 
-class LoginForm(forms.Form):
-    phone = forms.CharField(max_length=11, label="شماره تلفن")
-    password = forms.CharField(max_length=20, widget=forms.PasswordInput, label="پسورد")
-
 class RegisterForm(forms.ModelForm):
 
     class Meta:

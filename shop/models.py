@@ -28,7 +28,7 @@ class Product(models.Model):
     price = models.PositiveIntegerField(default=0)
     discount = models.FloatField(default=0)
     weight = models.PositiveIntegerField(default=0)
-    liked_by = models.ManyToManyField('account.ShopUser', related_name='likes', null=True, blank=True)
+    liked_by = models.ManyToManyField('account.ShopUser', related_name='likes', blank=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 

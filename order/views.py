@@ -4,7 +4,7 @@ from account.models import ShopUser
 from . models import OrderItem, Order
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
-from cart.SMSservises import verifiction
+from cart.SMSservises import verification
 from cart.cart import Cart
 import random
 from django.conf import settings
@@ -23,11 +23,9 @@ def create_order(request):
         if form.is_valid():
             order = form.save()
             request.session['order_id'] = order.pk
-            i = 0
             for order_item in cart:
                 order_item = OrderItem.objects.create(product=order_item['product'], order=order, price=order_item['price'],
                                                       quantity=order_item['quantity'], weight=order_item['weight'])
-                i += 1
             return redirect('order:send_request')
     else:
         form = OrderCreationForm()
