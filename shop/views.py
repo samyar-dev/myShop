@@ -3,6 +3,7 @@ from . models import Category, Product
 from cart.cart import Cart
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
+from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 # import json
 
@@ -39,6 +40,7 @@ def search(request):
         return JsonResponse({'searched_res': list(searched_res)})
 
 
+@login_required
 @require_POST
 def like_view(request, id):
     product = get_object_or_404(Product, id=id)
