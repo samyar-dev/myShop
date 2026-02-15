@@ -19,6 +19,7 @@ class Order(models.Model):
     address = models.OneToOneField('account.Address', related_name="order_address", on_delete=models.SET_NULL, null=True)
     paid = models.BooleanField(default=False)
     status = models.CharField(max_length=250, choices=Status, default=Status.REVIEW)
+    coupon = models.ForeignKey('Coupon', related_name='coupons', on_delete=models.SET_NULL, null=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -40,3 +41,8 @@ class OrderItem(models.Model):
     price = models.PositiveBigIntegerField(default=0)
     quantity = models.PositiveBigIntegerField(default=1)
     weight = models.PositiveBigIntegerField(null=True)
+
+
+class Coupon(models.Model):
+    code = models.CharField(max_length=150)
+    discount_percentage = models.DecimalField(max_digits=5, decimal_places=3)
