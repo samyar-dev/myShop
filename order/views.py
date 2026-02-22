@@ -37,24 +37,25 @@ if settings.SANDBOX:
 else:
     sandbox = 'www'
 
-ZP_API_REQUEST = f"https://{sandbox}.zarinpal.com/pg/rest/WebGate/PaymentRequest.json"
-ZP_API_VERIFY = f"https://{sandbox}.zarinpal.com/pg/rest/WebGate/PaymentVerification.json"
-ZP_API_STARTPAY = f"https://{sandbox}.zarinpal.com/pg/StartPay"
+ZP_API_REQUEST = f"https://{sandbox}.zarinpal.com/pg/v4/payment/request.json"
+ZP_API_VERIFY = f"https://{sandbox}.zarinpal.com/pg/v4/payment/verify.json"
+ZP_API_STARTPAY = f"https://{sandbox}.zarinpal.com/pg/StartPay/"
 
-# amount = 1000  # Rial / Required
-# description = "توضیحات مربوط به تراکنش را در این قسمت وارد کنید"  # Required
-# phone = "YOUR_PHONE_NUMBER"  # Optional
+# ZP_API_REQUEST = f"https://{sandbox}.zarinpal.com/pg/rest/WebGate/PaymentRequest.json"
+# ZP_API_VERIFY = f"https://{sandbox}.zarinpal.com/pg/rest/WebGate/PaymentVerification.json"
+# ZP_API_STARTPAY = f"https://{sandbox}.zarinpal.com/pg/StartPay/"
+
 # Important: need to edit for real server
 CallbackURL = 'http://127.0.0.1:8000/order/verify/'
 
 def send_request(request):
     cart = Cart(request)
     data = {
-        'MerchantID': settings.MERCHANT,
-        'Amount': cart.get_total_price(),
-        'Description': '',
-        'Phone': request.user.phone,
-        'CallbackURL': CallbackURL
+        'merchant_id': settings.MERCHANT_ID,
+        "amount": 1000,
+        'description': 'تراکنش تستی',
+        'phone': request.user.phone,
+        'callback_url': CallbackURL
     }
     data = json.dumps(data)
     # set content length by data
@@ -63,15 +64,14 @@ def send_request(request):
         response = requests.post(ZP_API_REQUEST, data=data, headers=headers, timeout=10)
         if response.status_code == 200:
             response_json = response.json()
-            authority = response_json['Authority']
-            if response_json['Status'] == 100:
+            authority = response_json["data"]["authority"]
+            if response_json["data"]["code"] == 100:
                 cart.clear()
                 return redirect(ZP_API_STARTPAY+authority)
             else:
-                print(response_json)
-                print(len(settings.MERCHANT))
                 return HttpResponse('Error')
-        return HttpResponse('response Failed')
+        else:
+            return HttpResponse('response Failed')
     except requests.exceptions.Timeout:
         return HttpResponse('timeout error')
     except requests.exceptions.ConnectionError:
@@ -81,24 +81,29 @@ def send_request(request):
 def verify(request):
     order = get_object_or_404(Order, id=request.session.get('order_id'))
     data = {
-        'MerchantID': settings.MERCHANT,
-        'Amount': order.get_total_price,
-        'Authority': request.GET.get('Authority')
+        'merchant_id': settings.MERCHANT_ID,
+        'amount': 1000,
+        'authority': request.GET.get('Authority')
     }
     data = json.dumps(data)
     # set content length by data
-    headers = {'accept': 'application/json', 'content-type': 'application/json', 'content-length': str(len(data)),}
+    headers = {'accept': 'application/json', 'content-type': 'application/json', 'content-length': str(len(data))}
     try:
         response = requests.post(ZP_API_VERIFY, data=data, headers=headers)
 
         if response.status_code == 200:
             response_json = response.json()
-            reference_id = response_json['RefID']
-            if response_json['Status'] == 100:
+            reference_id = response_json.get('RefID')
+            if response_json["data"]["code"] == 100:
                 order.paid = True
+                order.save()
                 return HttpResponse(f'successfull , RefID: {reference_id}')
             else:
+                print(response_json["data"]["code"])
+                
                 return HttpResponse('Error')
+            
+        print(response.status_code)
         return HttpResponse('response failed')
     except requests.exceptions.Timeout:
         return HttpResponse('timeout error')

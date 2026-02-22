@@ -1,21 +1,20 @@
 from django.shortcuts import render, get_object_or_404
 from shop.models import Product
 from .cart import Cart
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.views.decorators.http import require_POST
 
 
 # Create your views here.
 @require_POST
-def add_to_cart(request):
-        product_id = request.POST.get('productId')
-        product = get_object_or_404(Product, id=product_id)
-        cart = Cart(request)
-        cart.add(product)
-        context = {
-            'total_items': len(cart)
-        }
-        return JsonResponse(context)
+def add_to_cart(request, pk):
+     product = get_object_or_404(Product, id=pk)
+     cart = Cart(request)
+     cart.add(product)
+     context = {
+         'total_items': len(cart)
+     }
+     return JsonResponse(context)
 
 
 def cart_detail(request):

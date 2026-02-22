@@ -26,7 +26,7 @@ urlpatterns = [
     path("__debug__/", include("debug_toolbar.urls")),
     path('account/', include('account.urls', namespace='account')),
     path('order/', include('order.urls', namespace='order')),
-    path('api-auth/', include('rest_framework.urls'))
+    path('api/', include('api.urls', namespace='api'))
 ]
 
 if settings.DEBUG:

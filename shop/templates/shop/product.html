@@ -3,24 +3,8 @@
 {% load humanize %}
 {% block title %} {{ product.name }} {% endblock %}
 {% block head %}
-    <link rel="stylesheet" href="{% static 'css/prod-detail.css' %}">
 {% endblock %}
 {% block content %}
-
-<header>
-  <div class="header-container">
-    <a href="#" class="logo">جواهرات سَرای زَر</a>
-
-    <div class="search-box">
-      <input type="text" placeholder="جستجوی گردنبند، انگشتر، دستبند طلایی...">
-    </div>
-
-    <div class="right-section">
-      <a href="#" class="icon-btn">🛍️</a>
-      <a href="#" class="icon-btn">👤</a>
-    </div>
-  </div>
-</header>
 
 <section class="product-section">
   <div class="product-container">
@@ -36,10 +20,10 @@
           گردنبند طلای ۱۸ عیار با طراحی لوکس و ظریف، مناسب استفاده روزمره و مجالس رسمی.
           ساخته شده با بالاترین کیفیت ساخت و درخشندگی ماندگار.
         </p>
-        <div class="price">۲۴,۸۰۰,۰۰۰ تومان</div>
+        <div class="price">{{product.new_price}}</div>
       </div>
 
-      <button class="buy-btn">افزودن به سبد خرید</button>
+      <button class="buy-btn" data-csrf="{{csrf_token}}">افزودن به سبد خرید</button>
 
       <button class="like-btn">
         {% if request.user in product.liked_by.all %}
@@ -67,6 +51,17 @@
                 likeBtn.innerHTML = '❤️'
             }
         })
+    })
+
+    let totalItems = document.getElementById('total-itmes');
+    let buyBtn = document.querySelector('.buy-btn');
+    buyBtn.addEventListener('click', function(){
+      fetch('{% url "cart:add_to_cart" product.id %}', {
+        method: 'POST',
+        headers: {"X-CSRFToken": buyBtn.getAttribute('data-csrf'), "Content-Type": "application/json"},
+      })
+      .then(data => {return data.json()})
+      .then(res => {totalItems.innerHTML = res.total_items})
     })
 </script>
 
